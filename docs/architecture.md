@@ -29,7 +29,7 @@ graph TD
     API2 -->|PostgreSQL Protocol| DB
     
     Actions -->|Push Docker Image| Registry
-    Actions -->|Deploy (kubectl apply)| VM
+    Actions -->|Deploy via kubectl| VM
     VM -.->|Pull Image| Registry
 ```
 
