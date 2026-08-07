@@ -42,10 +42,13 @@ apiVersion: v1
 kind: Service
 metadata:
   name: cloud-application
+  labels:
+    app: cloud-application # <- Label necessária para o ServiceMonitor encontrar o Service
 spec:
   type: LoadBalancer
   selector:
     app: cloud-application
   ports:
-    - port: 80
+    - name: http           # <- Nome da porta que o ServiceMonitor vai procurar
+      port: 80
       targetPort: 8000
