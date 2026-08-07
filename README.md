@@ -81,6 +81,8 @@ Acesse a documentação interativa em: http://localhost:8000/docs
 
 > Inspirado no tutorial [Construindo APIs robustas utilizando Python](https://github.com/luizalabs/tutorial-python-brasil) do LuizaLabs.
 
+---
+
 # Competência 4 — Gestão de Dados e Persistência
 
 Nesta competência, o objetivo é conectar a aplicação a um banco de dados PostgreSQL gerenciado na Magalu Cloud, garantindo que os dados persistam.  
@@ -96,18 +98,6 @@ O código de integração com o banco já está pronto neste repositório. Seu t
 - [ ] Criar o Kubernetes Secret com a string de conexão (`DATABASE_URL`)
 - [ ] Fazer o deploy da aplicação
 - [ ] Validar que os dados persistem após reiniciar o container
-
----
-
-## Como rodar localmente
-
-**Pré-requisito:** [Docker Desktop](https://www.docker.com/products/docker-desktop/) instalado (Mac e Windows) ou [Docker Engine](https://docs.docker.com/engine/install/) (Linux).
-
-```bash
-docker compose up --build
-```
-
-Acesse a documentação interativa em: http://localhost:8000/docs
 
 ---
 
@@ -143,30 +133,6 @@ O código de observabilidade já está no repositório — logs em JSON, `/healt
 
 ---
 
-## Como rodar localmente
-
-**Pré-requisito:** [Docker Desktop](https://www.docker.com/products/docker-desktop/) instalado (Mac e Windows) ou [Docker Engine](https://docs.docker.com/engine/install/) (Linux).
-
-```bash
-docker compose up --build
-```
-
-Acesse a documentação interativa em: http://localhost:8000/docs
-
----
-
-## Secrets necessários no GitHub
-
-| Secret | Descrição |
-|--------|-----------|
-| `MGC_REGISTRY_USER` | Usuário do Container Registry da MGC |
-| `MGC_REGISTRY_PASSWORD` | Senha do Container Registry da MGC |
-| `MGC_REGISTRY_NAME` | Nome do seu registry na MGC |
-| `MGC_KUBECONFIG` | Conteúdo do arquivo `kubeconfig.yaml` (cole o conteúdo diretamente) |
-| `DATABASE_URL` | String de conexão do PostgreSQL (`postgresql://user:pass@host/orders`) |
-
----
-
 # Competência 6 — Arquitetura de Soluções em Nuvem
 
 Você construiu uma aplicação completa na nuvem — com deploy automatizado, banco de dados gerenciado e observabilidade. Agora chegou a hora de documentar e analisar o que foi construído: entender as decisões técnicas, os trade-offs envolvidos e como a arquitetura pode evoluir.
@@ -180,29 +146,6 @@ Ao final da Competência 6, você terá **documentado e analisado a arquitetura*
 - [ ] Analisar os trade-offs das escolhas: custo, escalabilidade, disponibilidade
 - [ ] Identificar pontos de melhoria e próximos passos
 
----
-
-## Como rodar localmente
-
-**Pré-requisito:** [Docker Desktop](https://www.docker.com/products/docker-desktop/) instalado (Mac e Windows) ou [Docker Engine](https://docs.docker.com/engine/install/) (Linux).
-
-```bash
-docker compose up --build
-```
-
-Acesse a documentação interativa em: http://localhost:8000/docs
-
----
-
-## Secrets necessários no GitHub
-
-| Secret | Descrição |
-|--------|-----------|
-| `MGC_REGISTRY_USER` | Usuário do Container Registry da MGC |
-| `MGC_REGISTRY_PASSWORD` | Senha do Container Registry da MGC |
-| `MGC_REGISTRY_NAME` | Nome do seu registry na MGC |
-| `MGC_KUBECONFIG` | Conteúdo do arquivo `kubeconfig.yaml` (cole o conteúdo diretamente) |
-| `DATABASE_URL` | String de conexão do PostgreSQL (`postgresql://user:pass@host/orders`) |
 ---
 
 ## Deploy e observabilidade
@@ -227,7 +170,17 @@ O workflow manual `Teste de carga (k6)` executa `load/k6/load-test.js` contra a 
 
 O teste valida o health check, criação e consulta de pedidos, inclusão de itens, listagem de pedidos, taxa de erros e latência P95. Os valores padrão são 20 VUs, 2 minutos de carga, rampa de 30 segundos e P95 máximo de 500 ms.
 
-## Solução completa de referência
+---
 
-Ao concluir esta competência, a solução final de referência estará disponível em:  
-[move-tech-cloud-application-final](https://github.com/move-tech-cloud-computing/move-tech-cloud-application-final)
+## Conclusão da Jornada Move Tech
+
+Este repositório consolida a trilha prática da Formação em Cloud Computing (Move Tech — Magalu × Prósper Digital Skills). Ao longo das Competências 3 a 6, evoluímos uma API simples e executada localmente em memória para uma aplicação **Cloud Native** robusta, escalável e resiliente, operando integralmente na Magalu Cloud.
+
+**Principais entregas e tecnologias aplicadas:**
+
+* **DevOps e Conteinerização:** Empacotamento da aplicação com Docker e automação completa do ciclo de vida (CI/CD) utilizando GitHub Actions para deploy no Kubernetes.
+* **Persistência e Segurança:** Substituição dos dados em memória por um banco de dados PostgreSQL (DBaaS), garantindo a persistência das informações e o gerenciamento seguro de credenciais através de Kubernetes Secrets.
+* **Observabilidade e Resiliência:** Instrumentação da aplicação com logs estruturados, health checks e métricas em formato Prometheus. O monitoramento foi centralizado via Grafana, permitindo a rápida detecção de anomalias e a recuperação automática de falhas pelo Kubernetes.
+* **Arquitetura e Performance:** Documentação das decisões técnicas (ADRs) e análise de trade-offs (custo vs. disponibilidade). A capacidade de resposta do sistema foi comprovada na prática através de testes de carga com k6 e auto-escalonamento (HPA) configurado para suportar picos de uso.
+
+O resultado final é uma infraestrutura moderna, bem documentada e preparada para produção, refletindo as melhores práticas do mercado em engenharia de nuvem, operação de sistemas e arquitetura de soluções.
