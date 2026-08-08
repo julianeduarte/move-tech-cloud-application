@@ -128,9 +128,13 @@ Documentação formal e análise crítica do ecossistema construído.
 
 ## ⚡ Teste de Carga com k6
 
-O projeto conta com validação de performance automatizada através do k6 (scripts em JavaScript integrados com automação em Shell e GitHub Actions).
+Como iniciativa adicional ao escopo proposto pelo projeto, foi implementada uma estrutura de testes de carga utilizando **k6**, com o objetivo de avaliar o comportamento da aplicação sob condições de estresse e ampliar a validação de sua performance.
 
-- **Como executar localmente:**
+* **Scripts de teste:** Criação da pasta **`load/k6`**, contendo scripts de testes de carga escritos em **JavaScript**, linguagem utilizada pelo k6 para definir os cenários e comportamentos dos testes.
+* **Automação:** Criação do arquivo **`run-load-test.sh`** na raiz do projeto, um script em **Shell** desenvolvido para automatizar a execução dos testes de carga.
+* **Execução:** A combinação entre os scripts em **k6 (JavaScript)** e o script de automação em **Shell** permite executar os testes de forma simplificada e reproduzível.
+
+### Como executar localmente:
 
   Bash
   ```
@@ -147,7 +151,6 @@ Bash
 
 ```
 docker compose up --build
-
 ```
 
 Acesse a documentação interativa em: `http://localhost:8000/docs`
