@@ -31,3 +31,7 @@ Usar K3s em uma VM BV2-2-40 (Ubuntu 24.04) com Klipper ServiceLB para expor a ap
 - Armazenamento efêmero: volumes locais desaparecem se a VM for recriada
 - Sem auto-scaling de nós: capacidade fixa (2 vCPU, 2 GB)
 - IP público muda se a VM for substituída
+
+## Atualização (2026-08-08)
+
+Foi implementado o Horizontal Pod Autoscaler (`k8s/hpa.yaml`), que ajusta o número de réplicas de pods (2 a 6) automaticamente conforme a utilização de CPU — validado sob carga real, escalando de 2 para 5 réplicas. Isso mitiga a escalabilidade horizontal citada como positiva acima, agora automática. Não resolve, porém, a limitação de nó único listada nas negativas: o HPA aumenta o número de pods dentro da mesma VM, não a capacidade física de CPU disponível — autoscaling de infraestrutura de verdade continuaria exigindo migração para o MKS multi-nó.
