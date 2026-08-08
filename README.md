@@ -23,7 +23,7 @@ Este repositório consolida a trilha prática completa da Formação em Cloud Co
 ├── .github/workflows/  # Pipelines de CI/CD (Deploy automatizado e testes)
 ├── app/                # Código-fonte da API REST (FastAPI, modelos e lógica)
 ├── docs/               # Documentação de Arquitetura, ADRs e Modelagem de Dados
-├── k8s/                # Manifestos Kubernetes (Deployment, Service, ServiceMonitor)
+├── k8s/                # Manifestos Kubernetes (Deployment, HPA, Service, ServiceMonitor)
 ├── load/k6/            # Scripts de teste de carga em JavaScript
 ├── tests/               # Testes automatizados da aplicação
 ├── .gitignore          # Arquivos ignorados pelo Git
@@ -142,6 +142,14 @@ Como iniciativa adicional ao escopo proposto pelo projeto, foi implementada uma 
 
 O teste valida o comportamento dos endpoints de pedidos sob estresse, checando taxas de erro e garantindo que a latência P95 permaneça dentro dos limites aceitáveis.
 
+## 📊 Autoscaling Automático (HPA)
+
+Também como iniciativa adicional — o curso lista o HPA apenas como sugestão de próximo passo na Competência 6, mas ele foi de fato implementado e testado no projeto.
+
+* **Manifesto:** Criação do `k8s/hpa.yaml`, um `HorizontalPodAutoscaler` que monitora a utilização de CPU dos pods e ajusta o número de réplicas automaticamente, com `minReplicas: 2`, `maxReplicas: 6` e alvo de 70% de utilização de CPU.
+* **Requests/limits:** Adição de `resources.requests`/`limits` de CPU e memória no `k8s/app.yaml` — necessário porque o HPA calcula a utilização como porcentagem do que foi solicitado (`requests`), não um valor absoluto.
+* **Validação sob carga real:** Usando o próprio teste de carga com k6, o HPA foi observado escalando de 2 para 5 réplicas em tempo real, acompanhando a CPU subir acima do alvo de 70%, e reduzindo as réplicas de volta gradualmente após o fim da carga (respeitando a janela de estabilização padrão do Kubernetes).
+
 ## ⚙️ Como Rodar Localmente
 
 **Pré-requisito:** [Docker Desktop](https://www.docker.com/products/docker-desktop/) instalado.
@@ -162,7 +170,7 @@ Este repositório consolida a trilha prática da Formação em Cloud Computing (
 - **DevOps e Conteinerização:** Empacotamento com Docker e automação de CI/CD via GitHub Actions para deploy contínuo no Kubernetes.
 - **Persistência e Segurança:** Utilização de banco de dados PostgreSQL (DBaaS) e gestão segura de credenciais com Kubernetes Secrets.
 - **Observabilidade e Resiliência:** Instrumentação com logs estruturados, health checks, Prometheus, Grafana e recuperação automática de pods.
-- **Arquitetura e Performance:** Documentação de decisões técnicas (ADRs), diagramas de arquitetura e testes de carga automatizados com k6.
+- **Arquitetura e Performance:** Documentação de decisões técnicas (ADRs), diagramas de arquitetura, testes de carga automatizados com k6 e autoscaling automático validado com HPA.
 
 O resultado é uma infraestrutura moderna, bem documentada e preparada para produção, refletindo as melhores práticas do mercado em engenharia de nuvem.
 
