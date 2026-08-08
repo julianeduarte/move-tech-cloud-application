@@ -1,47 +1,59 @@
-# Movetech --Projeto Final
-
-Ponto de partida da **Competência 3 — Desenvolvimento e Operação de Aplicações (DevOps)**.
-
+# MoveTech — Projeto Final
 
 > Parte do curso **Move Tech** — Magalu × Prósper Digital Skills  
 > Formação em Cloud Computing 
 
 ---
 
-## O que tem aqui
+## 📌 Sobre o Projeto
 
-Uma API simples de micro e-commerce com pedidos e itens, construída em Python com FastAPI.
+Este repositório consolida a trilha prática completa da Formação em Cloud Computing. Evoluímos dos fundamentos de infraestrutura até uma aplicação **Cloud Native** robusta, escalável e resiliente, operando integralmente na Magalu Cloud.
 
-A aplicação armazena os dados em memória. Ainda não tem deploy na nuvem — isso é exatamente o que você vai fazer nesta competência.
+### 🛠 Tecnologias Utilizadas
 
-### Endpoints disponíveis
-
-| Método | Rota | Descrição |
-|--------|------|-----------|
-| `GET` | `/health` | Verifica se a API está no ar |
-| `POST` | `/orders` | Cria um novo pedido |
-| `GET` | `/orders` | Lista todos os pedidos |
-| `GET` | `/orders/{id}` | Retorna um pedido com seus itens |
-| `DELETE` | `/orders/{id}` | Cancela um pedido |
-| `POST` | `/orders/{id}/items` | Adiciona um item ao pedido |
-| `GET` | `/orders/{id}/items` | Lista os itens de um pedido |
+- **Linguagens e Frameworks:** Python 3.11, FastAPI, SQLAlchemy, JavaScript (k6), Shell Script.
+- **DevOps e Infraestrutura:** Docker, Docker Compose, Kubernetes (K3s), Magalu Cloud (Container Registry, DBaaS, VMs).
+- **Automação e Monitoramento:** GitHub Actions (CI/CD), Prometheus, Grafana, k6 (Testes de Carga).
 
 ---
 
-## O que você vai fazer nesta competência
+## 📂 Estrutura do Repositório
 
-Ao final da Competência 3, a aplicação deve estar **versionada, conteinerizada e publicada na Magalu Cloud**.
+```text
+├── .github/workflows/  # Pipelines de CI/CD (Deploy automatizado e testes)
+├── app/                # Código-fonte da API REST (FastAPI, modelos e lógica)
+├── docs/               # Documentação de Arquitetura, ADRs e Modelagem de Dados
+├── k8s/                # Manifestos Kubernetes (Deployment, HPA, Service, ServiceMonitor)
+├── load/k6/            # Scripts de teste de carga em JavaScript
+├── tests/              # Testes automatizados da aplicação
+├── .gitignore          # Arquivos ignorados pelo Git
+├── Dockerfile          # Receita de empacotamento da aplicação
+├── docker-compose.yml  # Orquestração local para desenvolvimento
+├── pyproject.toml      # Gerenciamento de dependências via Poetry
+└── run-load-test.sh    # Script Shell para execução de testes
+```
 
-- [ ] Publicar a imagem no Container Registry da Magalu Cloud
-- [ ] Criar o manifest Kubernetes (`k8s/app.yaml`)
-- [ ] Fazer o deploy no cluster Kubernetes da Magalu Cloud
-- [ ] Configurar o pipeline de CI/CD no GitHub Actions
+## 🧠 Competências 1 e 2 — Fundamentos e Serviços Essenciais de Cloud
 
----
+As bases técnicas e operacionais que sustentam toda a arquitetura desenvolvida:
 
-## O Dockerfile
+- **Competência 1 (Fundamentos de Sistemas e Infraestrutura):** Focada no domínio do sistema operacional Linux, hierarquia FHS, gerenciamento de processos, permissões granulares (modelo RWX e octal), redes básicas e automação de rotinas utilizando scripts em Bash.
+- **Competência 2 (Serviços Essenciais de Cloud Computing):** Introdução aos blocos de construção da nuvem (IaaS, PaaS, SaaS), compreendendo o uso de Máquinas Virtuais, instâncias de banco de dados gerenciadas (DBaaS), arquitetura de redes virtuais (VPC, sub-redes públicas e privadas) e estratégias de armazenamento.
 
-O repositório já inclui um `Dockerfile` pronto. Ele define como a aplicação é empacotada em uma imagem Docker:
+## 🚀 Competência 3 — Desenvolvimento e Operação de Aplicações (DevOps)
+
+Ponto de partida para colocar a aplicação na nuvem de forma automatizada.
+
+### O que foi feito:
+
+- **Empacotamento:** Criação da imagem Docker utilizando o `Dockerfile`.
+- **Container Registry:** Publicação das imagens no Container Registry da Magalu Cloud.
+- **Deploy no Kubernetes:** Configuração do cluster K3s na Magalu Cloud e aplicação dos manifests (`k8s/app.yaml`) com Liveness e Readiness Probes.
+- **CI/CD:** Automação completa do fluxo de testes, build e deploy utilizando o GitHub Actions.
+
+### O Dockerfile
+
+O `docker-compose.yml` e o pipeline utilizam a seguinte estrutura de empacotamento:
 
 ```dockerfile
 FROM python:3.11-slim          # Imagem base com Python 3.11
@@ -61,49 +73,30 @@ EXPOSE 8000                    # Porta que a aplicação vai escutar
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 ```
 
-O `docker-compose.yml` usa esse Dockerfile para construir e rodar a aplicação localmente. Na nuvem, o pipeline faz o mesmo — constrói a imagem e publica no registry.
+### Endpoints disponíveis na API
 
-> **Referência:** [Dockerfile — Documentação oficial Docker](https://docs.docker.com/reference/dockerfile/)
+| **Método** | **Rota**             | **Descrição**                    |
+| ---------- | -------------------- | -------------------------------- |
+| `GET`      | `/health`            | Verifica se a API está no ar     |
+| `POST`     | `/orders`            | Cria um novo pedido              |
+| `GET`      | `/orders`            | Lista todos os pedidos           |
+| `GET`      | `/orders/{id}`        | Retorna um pedido com seus itens |
+| `DELETE`   | `/orders/{id}`        | Cancela um pedido                |
+| `POST`     | `/orders/{id}/items` | Adiciona um item ao pedido       |
+| `GET`      | `/orders/{id}/items` | Lista os itens de um pedido      |
 
----
+## 💾 Competência 4 — Gestão de Dados e Persistência
 
-## Como rodar localmente
+Evolução da persistência para garantir que os dados não se percam ao reiniciar os pods.
 
-**Pré-requisito:** [Docker Desktop](https://www.docker.com/products/docker-desktop/) instalado (Mac e Windows) ou [Docker Engine](https://docs.docker.com/engine/install/) (Linux).
+### O que foi feito:
 
-```bash
-docker compose up --build
-```
+- **Modelagem de Dados:** Documentação detalhada estruturada em `docs/data-model.md`.
+- **DBaaS Magalu Cloud:** Provisionamento de uma instância PostgreSQL gerenciada na nuvem.
+- **Segurança:** Configuração da string de conexão injetada de forma segura no cluster através de **Kubernetes Secrets** (`db-secret`).
+- **Validação:** Confirmação da persistência dos dados mesmo após novos deploys e reinicializações.
 
-Acesse a documentação interativa em: http://localhost:8000/docs
-
----
-
-> Inspirado no tutorial [Construindo APIs robustas utilizando Python](https://github.com/luizalabs/tutorial-python-brasil) do LuizaLabs.
-
----
-
-# Competência 4 — Gestão de Dados e Persistência
-
-Nesta competência, o objetivo é conectar a aplicação a um banco de dados PostgreSQL gerenciado na Magalu Cloud, garantindo que os dados persistam.  
-
-## O que você vai fazer nesta competência
-
-Ao final da Competência 4, os dados devem **persistir em banco de dados** mesmo quando o container reinicia.
-
-O código de integração com o banco já está pronto neste repositório. Seu trabalho é modelar os dados, provisionar e conectar o banco na Magalu Cloud.
-
-- [ ] Criar o documento de modelagem de dados da aplicação (`docs/data-model.md`)
-- [ ] Criar uma instância PostgreSQL no DBaaS da Magalu Cloud
-- [ ] Criar o Kubernetes Secret com a string de conexão (`DATABASE_URL`)
-- [ ] Fazer o deploy da aplicação
-- [ ] Validar que os dados persistem após reiniciar o container
-
----
-
-## Secrets necessários no GitHub
-
-Configure estes secrets no seu repositório (Settings → Secrets and variables → Actions):
+### Secrets necessários no GitHub
 
 | Secret | Descrição |
 |--------|-----------|
@@ -114,73 +107,63 @@ Configure estes secrets no seu repositório (Settings → Secrets and variables 
 | `DATABASE_URL` | String de conexão do PostgreSQL (`postgresql://user:pass@host/orders`) |
 ---
 
-# Competência 5 — Observabilidade e Resiliência
+## 📈 Competência 5 — Observabilidade, Resiliência e Autoscaling
 
-Nesta competência você vai configurar o monitoramento, criar alertas e observar como o Kubernetes se recupera de falhas automaticamente.
+Configuração de monitoramento avançado e garantia de alta disponibilidade no Kubernetes.
 
-## O que você vai fazer nesta competência
+### O que foi feito:
 
-Ao final da Competência 5, a aplicação deve estar **monitorada e resiliente**.
+- **Observabilidade:** Instrumentação com logs estruturados em JSON, endpoints dedicados (`/health`, `/stats`) e métricas no formato Prometheus (`/metrics`) geradas pelo `prometheus-fastapi-instrumentator`.
+- **Monitoramento Centralizado:** Instalação do Prometheus e Grafana via Helm no cluster, utilizando o `ServiceMonitor` para coleta automática de métricas.
+- **Auto-scaling (HPA):** Configuração do Horizontal Pod Autoscaler baseado na utilização de CPU, garantindo o balanceamento e escalabilidade automática das réplicas da aplicação.
 
-O código de observabilidade já está no repositório — logs em JSON, `/health` com verificação do banco, `/stats` com contagens e `/metrics` em formato Prometheus. Seu trabalho é configurar o monitoramento e observar a aplicação em produção.
+## 📐 Competência 6 — Arquitetura de Soluções em Nuvem
 
-- [ ] Fazer o deploy da aplicação
-- [ ] Verificar os logs estruturados via `kubectl logs`
-- [ ] Consultar `/health`, `/stats` e `/metrics` em produção
-- [ ] Instalar Prometheus e Grafana via Helm no cluster K3s (`kube-prometheus-stack`)
-- [ ] Criar o `ServiceMonitor` e confirmar a aplicação como target UP no Prometheus
-- [ ] Simular uma falha e observar a recuperação automática pelo Kubernetes
+Documentação formal e análise crítica do ecossistema construído.
 
----
+### O que foi feito:
 
-# Competência 6 — Arquitetura de Soluções em Nuvem
+- **Diagramas de Arquitetura:** Modelagem da solução completa implementada na Magalu Cloud.
+- **ADRs (Architecture Decision Records):** Documentação formal de todas as decisões técnicas e trade-offs adotados (custo, disponibilidade, escolha de banco gerenciado vs. auto-hospedado).
 
-Você construiu uma aplicação completa na nuvem — com deploy automatizado, banco de dados gerenciado e observabilidade. Agora chegou a hora de documentar e analisar o que foi construído: entender as decisões técnicas, os trade-offs envolvidos e como a arquitetura pode evoluir.
+## ⚡ Teste de Carga com k6
 
-## O que você vai fazer nesta competência
+O projeto conta com validação de performance automatizada através do k6 (scripts em JavaScript integrados com automação em Shell e GitHub Actions).
 
-Ao final da Competência 6, você terá **documentado e analisado a arquitetura** da solução que construiu.
+- **Como executar localmente:**
 
-- [ ] Desenhar o diagrama de arquitetura da solução na Magalu Cloud
-- [ ] Documentar as decisões técnicas tomadas ao longo do curso (ADR)
-- [ ] Analisar os trade-offs das escolhas: custo, escalabilidade, disponibilidade
-- [ ] Identificar pontos de melhoria e próximos passos
+  Bash
+  ```
+  ./run-load-test.sh
 
----
+  ```
+- O teste valida o comportamento dos endpoints de pedidos sob estresse, checando taxas de erro e garantindo que a latência P95 permaneça dentro dos limites aceitáveis.
 
-## Deploy e observabilidade
+## ⚙️ Como Rodar Localmente
 
-O workflow `Deploy` publica a imagem no Container Registry e aplica os manifestos em `k8s/`:
+**Pré-requisito:** [Docker Desktop](https://www.docker.com/products/docker-desktop/) instalado.
 
-- `app.yaml`: Deployment com duas réplicas, probes de saúde (`/health`), recursos de CPU/memória e Service do tipo `LoadBalancer`;
-- `hpa.yaml`: HPA baseado em utilização de CPU, mantendo entre 2 e 6 réplicas;
-- `servicemonitor.yaml`: ServiceMonitor que coleta as métricas da aplicação em `/metrics` a cada 15 segundos.
+Bash
 
-O HPA requer que o cluster tenha o Metrics Server instalado. O ServiceMonitor requer o Prometheus Operator e utiliza o label `release: monitoring`; ajuste esse valor caso o nome da instalação do Prometheus no cluster seja diferente.
+```
+docker compose up --build
 
-O endpoint `/metrics` é disponibilizado pelo `prometheus-fastapi-instrumentator`. O `Service` possui o label `app: cloud-application`, usado pelo ServiceMonitor para localizar os pods da aplicação.
+```
 
-## Teste de carga com k6
+Acesse a documentação interativa em: `http://localhost:8000/docs`
 
-O workflow manual `Teste de carga (k6)` executa `load/k6/load-test.js` contra a aplicação implantada. Para executá-lo:
+## 🏁 Conclusão da Jornada
 
-1. Acesse **Actions > Teste de carga (k6) > Run workflow**.
-2. Informe a URL pública do Service (`base_url`), a quantidade de usuários virtuais (`vus`), a duração do patamar (`duration`), o tempo de rampa (`ramp`) e o SLO de P95 (`p95_alvo_ms`).
-3. Consulte o resumo gerado no GitHub Actions e os artefatos `resumo.md` e `resultado.json`.
-
-O teste valida o health check, criação e consulta de pedidos, inclusão de itens, listagem de pedidos, taxa de erros e latência P95. Os valores padrão são 20 VUs, 2 minutos de carga, rampa de 30 segundos e P95 máximo de 500 ms.
-
----
-
-## Conclusão da Jornada Move Tech
-
-Este repositório consolida a trilha prática da Formação em Cloud Computing (Move Tech — Magalu × Prósper Digital Skills). Ao longo das Competências 3 a 6, evoluímos uma API simples e executada localmente em memória para uma aplicação **Cloud Native** robusta, escalável e resiliente, operando integralmente na Magalu Cloud.
+Este repositório consolida a trilha prática da Formação em Cloud Computing (Move Tech — Magalu × Prósper Digital Skills). Ao longo das Competências 1 a 6, evoluímos desde a base de sistemas operacionais e redes até uma aplicação **Cloud Native** robusta, escalável e resiliente, operando integralmente na nuvem.
 
 **Principais entregas e tecnologias aplicadas:**
 
-* **DevOps e Conteinerização:** Empacotamento da aplicação com Docker e automação completa do ciclo de vida (CI/CD) utilizando GitHub Actions para deploy no Kubernetes.
-* **Persistência e Segurança:** Substituição dos dados em memória por um banco de dados PostgreSQL (DBaaS), garantindo a persistência das informações e o gerenciamento seguro de credenciais através de Kubernetes Secrets.
-* **Observabilidade e Resiliência:** Instrumentação da aplicação com logs estruturados, health checks e métricas em formato Prometheus. O monitoramento foi centralizado via Grafana, permitindo a rápida detecção de anomalias e a recuperação automática de falhas pelo Kubernetes.
-* **Arquitetura e Performance:** Documentação das decisões técnicas (ADRs) e análise de trade-offs (custo vs. disponibilidade). A capacidade de resposta do sistema foi comprovada na prática através de testes de carga com k6 e auto-escalonamento (HPA) configurado para suportar picos de uso.
+- **Fundamentos e Serviços de Nuvem:** Domínio de ambientes Linux, redes privadas (VPC) e arquiteturas de computação e armazenamento.
+- **DevOps e Conteinerização:** Empacotamento com Docker e automação de CI/CD via GitHub Actions para deploy contínuo no Kubernetes.
+- **Persistência e Segurança:** Utilização de banco de dados PostgreSQL (DBaaS) e gestão segura de credenciais com Kubernetes Secrets.
+- **Observabilidade e Resiliência:** Instrumentação com logs estruturados, health checks, Prometheus, Grafana e auto-scale via HPA.
+- **Arquitetura e Performance:** Documentação de decisões técnicas (ADRs), diagramas de arquitetura e testes de carga automatizados com k6.
 
-O resultado final é uma infraestrutura moderna, bem documentada e preparada para produção, refletindo as melhores práticas do mercado em engenharia de nuvem, operação de sistemas e arquitetura de soluções.
+O resultado é uma infraestrutura moderna, bem documentada e preparada para produção, refletindo as melhores práticas do mercado em engenharia de nuvem.
+
+> Inspirado no tutorial [Construindo APIs robustas utilizando Python](https://github.com/luizalabs/tutorial-python-brasil) do LuizaLabs.
